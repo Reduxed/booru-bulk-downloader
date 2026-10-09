@@ -1,22 +1,29 @@
 # Publishing guide
 
-**Status: PUBLISHED to Greasy Fork and mirrored to GitHub on 2026-10-09.**
+**Status: PUBLISHED to Greasy Fork and mirrored to GitHub. Current release: v1.0.1 (2026-10-09).**
 
 | | |
 | --- | --- |
 | Live page | https://greasyfork.org/en/scripts/599354-booru-bulk-downloader |
 | Install URL | https://update.greasyfork.org/scripts/599354/Booru%20Bulk%20Downloader.user.js |
 | Script ID | 599354 |
-| Version / licence / size | 1.0.0 / MIT / 43.8 KB |
+| Version / licence / size | 1.0.1 / MIT / 43.9 KB |
 | Published by | augdawg (Greasy Fork user 1051598) |
 
 **GitHub mirror:** https://github.com/Reduxed/booru-bulk-downloader - public, branch main.
 
-All five project files are committed there. The script is byte-identical to the copy Greasy Fork
-serves (and therefore also to the local file apart from Greasy Fork's injected @downloadURL /
-@updateURL lines), which was verified after committing by fetching each file back from
-raw.githubusercontent.com and comparing hashes. Keeping that identity means the two sources cannot
-silently diverge.
+Install from GitHub:
+https://raw.githubusercontent.com/Reduxed/booru-bulk-downloader/main/booru-bulk-downloader.user.js
+
+All five project files are committed there, and the script is byte-identical to the copy Greasy
+Fork serves apart from the two `@downloadURL` / `@updateURL` lines Greasy Fork injects.
+
+The verification method matters here, because two obvious checks give wrong answers. Comparing
+byte counts is unreliable on files containing non-ASCII characters - characters are not bytes, and
+a same-length comparison against UTF-8 bytes produces false mismatches. And
+raw.githubusercontent.com can serve a stale copy for a while after a commit. The dependable check
+is to compute the file's Git blob SHA-1 locally and compare it against the sha returned by
+https://api.github.com/repos/Reduxed/booru-bulk-downloader/contents/<path>
 
 Verified after publishing:
 
@@ -40,39 +47,62 @@ Two things learned that are worth keeping:
 - The update form has no adult-content checkbox, because that flag is derived from the matched
   hosts rather than self-reported.
 
-## Still open (optional)
+## Still open
 
-- **OpenUserJS** mirror - https://openuserjs.org/ - needs a GitHub sign-in first.
-- **GitHub** repo - DONE: https://github.com/Reduxed/booru-bulk-downloader exists and holds the
-  full package. Adding a real `@homepageURL` / `@supportURL` to the script is still open, but it
-  would make the script differ from the published v1.0.0, so it belongs with a v1.0.1 release.
-- Shipping a future version: upload the new file at
-  https://greasyfork.org/en/scripts/599354/versions/new (the form preloads the current code and
-  description, so only the changed parts need touching).
+- **OpenUserJS** mirror - https://openuserjs.org/ - **not published.** Its /login is account
+  creation, not a plain sign-in: the form at /auth/ requires choosing a **username that the page
+  says will be displayed to everyone**, picking an OAuth provider (GitHub, Google, Imgur, Reddit,
+  Steam), and ticking a box agreeing to their **binding Terms of Service**. Choosing a public
+  handle and accepting terms on another person's behalf is not something to automate. It takes the
+  account owner about a minute, after which the listing can be posted at
+  https://openuserjs.org/scripts/new.
+- **Shipping a future version:** upload the new file at
+  https://greasyfork.org/en/scripts/599354/versions/new. The form preloads the current code,
+  description, name and markup, so only the changed parts need touching, and it has a changelog
+  field. There is no adult-content checkbox on the update form - that flag is derived from the
+  matched hosts.
+- **Greasy Fork's update CDN lags behind its own database.** Right after 1.0.1 was posted, the
+  script page reported Version 1.0.1 and Size 43.9 KB and meta.js served 1.0.1, but
+  update.greasyfork.org/scripts/599354/...user.js still returned the 1.0.0 body on four
+  consecutive reads. A stale CDN read is not a failed upload - check the script page itself, and
+  re-read later before telling anyone the release did not land.
 
-## Where this should go
+## v1.0.1 - what changed, and two defects it fixes
 
-1. **Greasy Fork** - https://greasyfork.org/script_versions/new - the primary userscript
-   repository and the one people actually search. Do this first.
-2. **OpenUserJS** - https://openuserjs.org/ - a useful mirror, but it authenticates through
-   GitHub, so sign in to GitHub first if you want it.
-3. **GitHub** - optional but worth it: a canonical source, an issue tracker for the
-   `@supportURL⟩ field, and somewhere to point `@homepageURL⟩. This folder works as the
-   repo root as-is.
+Metadata and documentation release. No change to download behaviour.
+
+- Added `@homepageURL` and `@supportURL` so the script page links back to its source and to the
+  issue tracker that field points at.
+- **Fixed two real defects that were already live on GitHub:**
+  1. Every code span in README.md, CHANGELOG.md and PUBLISHING.md carried a stray pointing-bracket
+     character (U+27E9) where a **closing** backtick belonged - 63, 6 and 17 occurrences. A
+     placeholder substitution used while writing those docs converted only the opening token, so
+     the closing token survived into the published files and the code spans did not render as
+     code. The userscript source itself was never affected: it contains no backticks at all.
+  2. README.md linked to Dassi-only project:// URIs, which are meaningless to a reader on GitHub.
+     Three links were made repo-relative, and a real Install section was added.
+- The Greasy Fork description was checked for the same stray character and was already clean.
+
+## Where this went
+
+1. **Greasy Fork** - DONE. https://greasyfork.org/en/scripts/599354-booru-bulk-downloader
+2. **OpenUserJS** - pending the account sign-up described above.
+3. **GitHub** - DONE. https://github.com/Reduxed/booru-bulk-downloader is the canonical source and
+   provides the issue tracker that `@supportURL` points at.
 
 ## Greasy Fork requirements this script already satisfies
 
 Checked live against https://greasyfork.org/en/help/code-rules and
 https://greasyfork.org/en/help/external-scripts:
 
-- **Code must not be obfuscated or minified.** The script is 1120 lines of
+- **Code must not be obfuscated or minified.** The script is 1122 lines of
   commented, readable source.
 - **Under the 2 MB size limit.** It is roughly 44 KB.
-- **The description must match what it does.** Both the `@description⟩ metadata and the
+- **The description must match what it does.** Both the `@description` metadata and the
   listing copy below describe the real behaviour, including batch download and ZIP export.
 - **External executable code is restricted.** The script now loads **nothing** external at
-  runtime - the JSZip `@require⟩ was replaced with a built-in store-only ZIP writer. There
-  is no `@require⟩, no `@resource⟩, no dynamic script injection and no eval.
+  runtime - the JSZip `@require` was replaced with a built-in store-only ZIP writer. There
+  is no `@require`, no `@resource`, no dynamic script injection and no eval.
 - **Scripts for sites with adult content must be marked as such.** The rule, verbatim:
 
   > Scripts that ... contain adult content or are for sites with adult content must be
@@ -80,14 +110,14 @@ https://greasyfork.org/en/help/external-scripts:
 
   **Tick the adult-content / NSFW option on the upload form.** Gelbooru, Rule34 and e621
   are adult sites, so this is mandatory. Scripts get deleted over it.
-- No `@antifeature⟩ disclaimer is needed: no tracking, no ads, no analytics, and no data
+- No `@antifeature` disclaimer is needed: no tracking, no ads, no analytics, and no data
   leaving the browser beyond the image requests the user asked for.
 
 ### One thing to expect in review
 
-`@connect *⟩ is intentionally broad, and it has to be: every booru serves originals from a
-different CDN hostname (`img3.gelbooru.com⟩, `wimg.rule34.xxx⟩, `cdn.donmai.us⟩,
-`files.yande.re⟩, `static1.e621.net⟩, and so on), and the script breaks on any host it
+`@connect *` is intentionally broad, and it has to be: every booru serves originals from a
+different CDN hostname (`img3.gelbooru.com`, `wimg.rule34.xxx`, `cdn.donmai.us`,
+`files.yande.re`, `static1.e621.net`, and so on), and the script breaks on any host it
 cannot enumerate. Greasy Fork permits it - it simply appears on the script page as a
 cross-domain request permission. It is disclosed in the listing copy so nobody installs it
 unaware.
@@ -100,7 +130,7 @@ unaware.
 Booru Bulk Downloader
 ```
 
-**Summary / the `@description⟩ line**
+**Summary / the `@description` line**
 
 ```
 Adds a checkbox and a download button to every thumbnail on a booru gallery. Saves the full-resolution original, names it from the post's tags, and can batch-download or ZIP a whole selection without leaving the results page.
@@ -189,10 +219,10 @@ Report problems through the Feedback tab on this script's page.
 
 1. Sign in to Greasy Fork (GitHub, Google, or a Greasy Fork account).
 2. Open https://greasyfork.org/script_versions/new
-3. Paste the full contents of `booru-bulk-downloader.user.js⟩ into the code box.
+3. Paste the full contents of `booru-bulk-downloader.user.js` into the code box.
 4. **Tick the adult/NSFW option.** Required - the supported sites are adult sites.
 5. Use the name, summary and long description above.
-6. Language: English. Licence: MIT. Leave `@updateURL⟩ / `@downloadURL⟩ alone - Greasy Fork
+6. Language: English. Licence: MIT. Leave `@updateURL` / `@downloadURL` alone - Greasy Fork
    fills those in itself.
 7. Save, then open the script page and confirm the metadata block parsed correctly.
 
