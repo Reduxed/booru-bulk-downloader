@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name         Booru Bulk Downloader
 // @namespace    https://aug.quest/booru-bulk-downloader
-// @version      1.0.0
+// @version      1.0.1
 // @description  Adds a checkbox + download button to every thumbnail on a booru gallery. Fetches the full-resolution ORIGINAL and names the file from the post's tags. Batch select, progress, optional ZIP. Never leaves the gallery page.
 // @author       Aug
 // @license      MIT
+// @homepageURL  https://github.com/Reduxed/booru-bulk-downloader
+// @supportURL   https://github.com/Reduxed/booru-bulk-downloader/issues
 // @run-at       document-idle
 // @match        *://*.gelbooru.com/*
 // @match        *://*.safebooru.org/*
