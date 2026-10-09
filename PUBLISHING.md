@@ -1,6 +1,6 @@
 # Publishing guide
 
-**Status: PUBLISHED to Greasy Fork and mirrored to GitHub. Current release: v1.0.1 (2026-10-09).**
+**Status: PUBLISHED to Greasy Fork, OpenUserJS and GitHub. Current release: v1.0.1 (2026-10-09).**
 
 | | |
 | --- | --- |
@@ -9,6 +9,26 @@
 | Script ID | 599354 |
 | Version / licence / size | 1.0.1 / MIT / 43.9 KB |
 | Published by | augdawg (Greasy Fork user 1051598) |
+
+**OpenUserJS mirror:** https://openuserjs.org/scripts/reductedharmgmail.com/Booru_Bulk_Downloader
+
+| | |
+| --- | --- |
+| Install URL | https://openuserjs.org/install/reductedharmgmail.com/Booru_Bulk_Downloader.user.js |
+| Account | signed in as `reductedharmgmail.com` |
+| Verified | served source byte-identical to the release: 44970 bytes, 1122 lines, nothing injected |
+| Note | the page shows "1.0.1+781c205" as an internal build hash, but the file's `@version` is untouched |
+
+Two things about OpenUserJS that cost time and are worth writing down:
+
+- **Creating a script is not at `/scripts/new`** - that path 404s. The real entry point is
+  `/user/add/scripts`, which offers an upload form and an "Write Script Online" Ace editor.
+- **The upload validates the file's MIME type.** The first attempt was rejected with
+  `400 Selected file is not JavaScript.` even though the filename ended in `.user.js`
+  and the byte count was exactly right (both confirmed by reading the file input in the DOM).
+  The cause was the attached File's `type`, which came out as `text/plain` because the staged
+  resource had been written with the default MIME. Staging it with a JavaScript MIME type made the
+  File report `text/javascript` and the upload was accepted. The bytes were never the problem.
 
 **GitHub mirror:** https://github.com/Reduxed/booru-bulk-downloader - public, branch main.
 
@@ -49,23 +69,18 @@ Two things learned that are worth keeping:
 
 ## Still open
 
-- **OpenUserJS** mirror - https://openuserjs.org/ - **not published.** Its /login is account
-  creation, not a plain sign-in: the form at /auth/ requires choosing a **username that the page
-  says will be displayed to everyone**, picking an OAuth provider (GitHub, Google, Imgur, Reddit,
-  Steam), and ticking a box agreeing to their **binding Terms of Service**. Choosing a public
-  handle and accepting terms on another person's behalf is not something to automate. It takes the
-  account owner about a minute, after which the listing can be posted at
-  https://openuserjs.org/scripts/new.
-- **Shipping a future version:** upload the new file at
-  https://greasyfork.org/en/scripts/599354/versions/new. The form preloads the current code,
+- **Shipping a future version:** update Greasy Fork at
+  https://greasyfork.org/en/scripts/599354/versions/new (the form preloads the current code,
   description, name and markup, so only the changed parts need touching, and it has a changelog
-  field. There is no adult-content checkbox on the update form - that flag is derived from the
-  matched hosts.
-- **Greasy Fork's update CDN lags behind its own database.** Right after 1.0.1 was posted, the
-  script page reported Version 1.0.1 and Size 43.9 KB and meta.js served 1.0.1, but
-  update.greasyfork.org/scripts/599354/...user.js still returned the 1.0.0 body on four
-  consecutive reads. A stale CDN read is not a failed upload - check the script page itself, and
-  re-read later before telling anyone the release did not land.
+  field). There is no adult-content checkbox on the update form - that flag is derived from the
+  matched hosts. On OpenUserJS, re-upload at https://openuserjs.org/user/add/scripts with the
+  file's MIME staged as JavaScript.
+- **Greasy Fork's update CDN lags behind its own database - resolved, but expect it again.**
+  Right after 1.0.1 was posted, the script page and meta.js reported 1.0.1 while
+  update.greasyfork.org/scripts/599354/...user.js still returned the 1.0.0 body on five
+  consecutive reads. It later settled on the correct 45158 bytes (= 44970 + the 188 bytes of
+  Greasy Fork's own injected lines). A stale CDN read is not a failed upload: check the script
+  page, then re-read the file.
 
 ## v1.0.1 - what changed, and two defects it fixes
 
