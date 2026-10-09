@@ -1,6 +1,6 @@
 # Publishing guide
 
-**Status: PUBLISHED to Greasy Fork on 2026-10-09.**
+**Status: PUBLISHED to Greasy Fork and mirrored to GitHub on 2026-10-09.**
 
 | | |
 | --- | --- |
@@ -9,6 +9,14 @@
 | Script ID | 599354 |
 | Version / licence / size | 1.0.0 / MIT / 43.8 KB |
 | Published by | augdawg (Greasy Fork user 1051598) |
+
+**GitHub mirror:** https://github.com/Reduxed/booru-bulk-downloader - public, branch main.
+
+All five project files are committed there. The script is byte-identical to the copy Greasy Fork
+serves (and therefore also to the local file apart from Greasy Fork's injected @downloadURL /
+@updateURL lines), which was verified after committing by fetching each file back from
+raw.githubusercontent.com and comparing hashes. Keeping that identity means the two sources cannot
+silently diverge.
 
 Verified after publishing:
 
@@ -35,8 +43,9 @@ Two things learned that are worth keeping:
 ## Still open (optional)
 
 - **OpenUserJS** mirror - https://openuserjs.org/ - needs a GitHub sign-in first.
-- **GitHub** repo as the canonical source - this folder is already repo-shaped, and would give
-  a real `@homepageURL` / `@supportURL`.
+- **GitHub** repo - DONE: https://github.com/Reduxed/booru-bulk-downloader exists and holds the
+  full package. Adding a real `@homepageURL` / `@supportURL` to the script is still open, but it
+  would make the script differ from the published v1.0.0, so it belongs with a v1.0.1 release.
 - Shipping a future version: upload the new file at
   https://greasyfork.org/en/scripts/599354/versions/new (the form preloads the current code and
   description, so only the changed parts need touching).
